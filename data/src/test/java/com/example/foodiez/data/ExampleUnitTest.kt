@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.foodiez.data
 
 import org.junit.Test
 

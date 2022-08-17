@@ -3,6 +3,8 @@ package com.example.foodiez.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.foodiez.data.database.FoodiezDatabase
+import com.example.foodiez.data.database.dao.ProductDao
+import com.example.foodiez.data.database.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +33,19 @@ object DatabaseModule {
             FoodiezDatabase.DATABASE_NAME
         ).build()
     }
+
+    /**
+     * Creation of the UserDao instance.
+     *
+     * @param database instance of a database
+     * @return UserDao Dao of the table 'user'
+     */
+    @Singleton
+    @Provides
+    fun provideUserDao(database: FoodiezDatabase): UserDao = database.userProfileDao()
+
+
+    @Singleton
+    @Provides
+    fun provideProductDao(database: FoodiezDatabase): ProductDao = database.productDao()
 }

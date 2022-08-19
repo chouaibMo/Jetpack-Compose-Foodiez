@@ -6,13 +6,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.common.MealCard
-import com.example.foodiez.ui.product.ProductViewModel
+import com.example.foodiez.ui.product.ProductSource
 import com.example.foodiez.ui.theme.CreamWhite2
 
 @Composable
-fun SearchScreen(navController: NavController, viewModel: ProductViewModel) {
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hiltViewModel()) {
     val products = viewModel.productsList?.products
     Box(
         modifier = Modifier
@@ -25,7 +27,11 @@ fun SearchScreen(navController: NavController, viewModel: ProductViewModel) {
             modifier = Modifier.fillMaxHeight()
         ) {
             products?.forEach { product ->
-                item { MealCard(navController = navController, data = product) }
+                item {
+                    MealCard(data = product) {
+                        navController.navigate(Screen.Product.navigationLink(ProductSource.REMOTE, product.productID.toLong()))
+                    }
+                }
             }
         }
     }

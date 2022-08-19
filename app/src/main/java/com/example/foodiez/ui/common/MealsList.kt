@@ -20,18 +20,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.domain.product.Product
 import com.example.foodiez.domain.product.ProductData
 import com.example.foodiez.navigation.Screen
-import com.example.foodiez.ui.home.HomeViewModel
+import com.example.foodiez.ui.product.ProductSource
 import com.example.foodiez.ui.theme.Dark
 import com.example.foodiez.ui.theme.Gray
 
 @Composable
-fun MealsList(navController: NavController, meal: String?, viewModel: HomeViewModel) {
-    val data = viewModel.product?.data
-    Column {
-        meal?.let {
+fun MealsList(navController: NavController, mealType: MealType, products: List<Product>) {
+    val filteredProducts = products.filter { it.type == mealType }
+
+    if(filteredProducts.isNotEmpty()) {
+        Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -40,7 +42,7 @@ fun MealsList(navController: NavController, meal: String?, viewModel: HomeViewMo
                     .padding(start = 4.dp, end = 4.dp, bottom = 6.dp)
             ) {
                 Text(
-                    text = meal,
+                    text = mealType.tag,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
@@ -52,37 +54,42 @@ fun MealsList(navController: NavController, meal: String?, viewModel: HomeViewMo
                 )
             }
         }
-
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        repeat(3) {
-            MealCard(navController = navController, data = data)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            filteredProducts.forEach {
+                MealCard(data = it.data) {
+                    it.id?.let { id ->
+                        navController.navigate(
+                            Screen.Product.navigationLink(
+                                ProductSource.LOCAL,
+                                id.toLong()
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun MealCard(navController: NavController, data: ProductData?) {
+fun MealCard(data: ProductData, onClick: (() -> Unit)) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable {
-                navController.navigate(Screen.Product.route)
-            }
-        ,
+            .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
         elevation = 5.dp,
         backgroundColor = Gray
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberImagePainter("${data?.imageURL}"),
+                painter = rememberImagePainter(data.imageURL),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -92,13 +99,13 @@ fun MealCard(navController: NavController, data: ProductData?) {
             )
             Column(Modifier.padding(8.dp)) {
                 Text(
-                    text = "${data?.productName}",
+                    text = data.productName,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "${data?.nutriments?.energyKcal?.toInt()} kcal • 100 g/ml",
+                        text = "${data.nutriments.energyKcal.toInt()} kcal • 100 g/ml",
                         color = Color.Gray,
                         fontSize = 12.sp
                     )

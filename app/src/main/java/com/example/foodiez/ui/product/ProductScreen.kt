@@ -71,10 +71,10 @@ fun ProductScreen(navController: NavController, viewModel: ProductViewModel = hi
                 brand = state.product?.brand
             )
             ProductMacroNutriments(
-                state.product?.caloriePer100,
-                state.product?.carbsPer100,
-                state.product?.proteinsPer100,
-                state.product?.fatsPer100
+                state.product?.caloriesByQuantity(),
+                state.product?.carbsByQuantity(),
+                state.product?.proteinsByQuantity(),
+                state.product?.fatsByQuantity()
             )
             ProductQuantity(state)
         }

@@ -104,7 +104,7 @@ fun MealCard(product: Product, onClick: (() -> Unit)) {
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "${product.caloriePer100} kcal • 100 g/ml",
+                        text = "${product.caloriesByQuantity().toInt()} kcal • ${product.quantity} g/ml",
                         color = Color.Gray,
                         fontSize = 12.sp
                     )

@@ -1,7 +1,7 @@
 package com.example.foodiez.data.di
 
-import com.example.foodiez.data.network.ProductApi
-import com.example.foodiez.data.network.SearchApi
+import com.example.foodiez.data.network.product.ProductApi
+import com.example.foodiez.data.network.search.SearchApi
 import com.example.foodiez.data.utils.Constants
 import dagger.Module
 import dagger.Provides

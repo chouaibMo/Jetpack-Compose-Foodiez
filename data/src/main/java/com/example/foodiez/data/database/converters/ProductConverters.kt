@@ -1,9 +1,9 @@
 package com.example.foodiez.data.database.converters
 
 import androidx.room.TypeConverter
-import com.example.foodiez.domain.product.Nutriments
+import com.example.foodiez.data.network.product.Nutriments
 import com.example.foodiez.domain.product.Product
-import com.example.foodiez.domain.product.ProductData
+import com.example.foodiez.data.network.product.ProductData
 import com.google.gson.Gson
 
 class ProductConverters {

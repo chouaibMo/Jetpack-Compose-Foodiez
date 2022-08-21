@@ -1,4 +1,4 @@
-package com.example.foodiez.domain.product
+package com.example.foodiez.data.network.product
 
 import com.google.gson.annotations.SerializedName
 

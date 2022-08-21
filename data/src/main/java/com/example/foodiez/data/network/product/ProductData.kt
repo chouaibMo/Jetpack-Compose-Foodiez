@@ -1,35 +1,19 @@
-package com.example.foodiez.domain.product
+package com.example.foodiez.data.network.product
 
 import com.google.gson.annotations.SerializedName
 
 data class ProductData(
 
-//    @SerializedName("additives_n")
-//    val additivesN: Long,
-//
-//    @SerializedName("additives_tags")
-//    val additivesTags: List<String>,
-
-//    val complete: Long,
-//
-//    val completeness: Double,
-
-//    @SerializedName("food_groups")
-//    val foodGroups: String,
-
     @SerializedName("id")
     val productID: String,
 
     @SerializedName("image_url")
-    val imageURL: String,
+    val imageURL: String?,
 
     @SerializedName("brands")
-    val brands: String,
+    val brands: String?,
 
     val nutriments: Nutriments,
-
-//    @SerializedName("nutriscore_data")
-//    val nutriscore: Nutriscore,
 
     @SerializedName("nutriscore_grade")
     val nutriscoreGrade: String,
@@ -45,4 +29,21 @@ data class ProductData(
 
     @SerializedName("serving_size")
     val servingSize: String,
+
+//    @SerializedName("additives_n")
+//    val additivesN: Long,
+//
+//    @SerializedName("additives_tags")
+//    val additivesTags: List<String>,
+
+//    val complete: Long,
+//
+//    val completeness: Double,
+
+//    @SerializedName("food_groups")
+//    val foodGroups: String,
+
+//    @SerializedName("nutriscore_data")
+//    val nutriscore: Nutriscore,
+
 )

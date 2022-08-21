@@ -1,6 +1,5 @@
-package com.example.foodiez.data.network
+package com.example.foodiez.data.network.product
 
-import com.example.foodiez.domain.product.Product
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,5 +9,5 @@ import retrofit2.http.Path
 interface ProductApi {
 
     @GET("product/{code}.json")
-    suspend fun getProduct(@Path("code") code: String): Response<Product>
+    suspend fun getProduct(@Path("code") code: String): Response<ProductDto>
 }

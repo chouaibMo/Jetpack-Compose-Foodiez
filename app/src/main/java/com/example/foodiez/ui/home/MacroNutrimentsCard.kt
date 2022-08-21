@@ -32,15 +32,15 @@ fun MacroNutrimentsCard(stats: Stats?) {
 
             Column(Modifier.padding(8.dp)) {
                 Text(text = "Carbs", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalCarbs ?: "N/A"}/300 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Green100)
+                Text(text = "${stats?.totalCarbs ?: "--"}/300 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Green100)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(text = "Proteins", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalProteins ?: "N/A"}/160 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Blue100)
+                Text(text = "${stats?.totalProteins ?: "--"}/160 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Blue100)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(text = "Fats", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalFats ?: "N/A"}/70 g (85%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Orange100)
+                Text(text = "${stats?.totalFats ?: "--"}/70 g (85%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Orange100)
 
             }
             // TODO : remove hardcoded max progress

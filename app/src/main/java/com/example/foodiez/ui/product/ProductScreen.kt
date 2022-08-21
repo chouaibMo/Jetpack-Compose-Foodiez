@@ -3,8 +3,10 @@ package com.example.foodiez.ui.product
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -23,22 +27,21 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.foodiez.data.utils.Constants
+import com.example.foodiez.data.utils.Constants.Companion.TAG
 import com.example.foodiez.domain.product.MealType
-import com.example.foodiez.domain.product.Product
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.theme.*
 
 @Composable
 fun ProductScreen(navController: NavController, viewModel: ProductViewModel = hiltViewModel()) {
-    val product = viewModel.product.collectAsState()
+    val state = viewModel.state
+    val focusManager = LocalFocusManager.current
 
-    val productData = product.value?.data
     Scaffold(
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
             SaveProductButton {
-                viewModel.saveProduct(product.value)
+                viewModel.saveProduct(state.product)
                 navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Home.route) {
                         inclusive = true
@@ -54,20 +57,26 @@ fun ProductScreen(navController: NavController, viewModel: ProductViewModel = hi
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(30.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }
         ) {
             ProductHeader(
-                url = productData?.imageURL,
-                name = productData?.productName,
-                brand = productData?.brands
+                url = state.product?.imageURL,
+                name = state.product?.name,
+                brand = state.product?.brand
             )
             ProductMacroNutriments(
-                productData?.nutriments?.energyKcal,
-                productData?.nutriments?.carbohydrates,
-                productData?.nutriments?.proteins,
-                productData?.nutriments?.fat
+                state.product?.caloriePer100,
+                state.product?.carbsPer100,
+                state.product?.proteinsPer100,
+                state.product?.fatsPer100
             )
-            ProductQuantity(product.value)
+            ProductQuantity(state)
         }
     }
 
@@ -89,12 +98,12 @@ fun ProductHeader(url: String?, name: String?, brand: String?) {
                 .clip(RoundedCornerShape(10.dp))
         )
         Text(
-            text = name ?: "N/A",
+            text = name ?: "--",
             fontSize = 24.sp,
             fontWeight = FontWeight.ExtraBold,
             textAlign = TextAlign.Center
         )
-        Text(text = brand ?: "N/A", fontSize = 12.sp)
+        Text(text = brand ?: "--", fontSize = 12.sp)
     }
 }
 
@@ -123,19 +132,26 @@ fun MacroNutriment(label: String, value: Double?, color: Color) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProductQuantity(product: Product?) {
+fun ProductQuantity(state: ProductState) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-        var value by remember { mutableStateOf("100") }
-
-        val options = MealType.values().map { it.tag }
+        val focusManager = LocalFocusManager.current
+        var quantity by remember { mutableStateOf(0) }
         var expanded by remember { mutableStateOf(false) }
+        val options = MealType.values().map { it.tag }
+
+        quantity = state.product?.quantity ?: 0
 
         OutlinedTextField(
-            value = value,
-            onValueChange = { value = it },
+            value = quantity.toString(),
+            onValueChange = {
+                quantity = if (it.isBlank()) 0 else it.toInt()
+                Log.e(TAG, "changed: $it")
+                state.product?.quantity = quantity
+            },
             label = { Text("Quantity") },
             singleLine = true,
             trailingIcon = { Text("g/ml") },
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Dark,
@@ -151,7 +167,7 @@ fun ProductQuantity(product: Product?) {
         ) {
             OutlinedTextField(
                 readOnly = true,
-                value = product?.type?.tag ?: "Select meal type",
+                value = state.product?.type?.tag ?: "Select..",
                 onValueChange = {},
                 label = { Text("Meal type") },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -167,7 +183,8 @@ fun ProductQuantity(product: Product?) {
                 options.forEach { selected ->
                     DropdownMenuItem(
                         onClick = {
-                            product?.type = MealType.valueOf(selected.uppercase())
+                            focusManager.clearFocus()
+                            state.product?.type = MealType.valueOf(selected.uppercase())
                             expanded = false
                         }
                     ) {

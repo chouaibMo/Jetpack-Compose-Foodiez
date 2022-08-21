@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +29,8 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            stats = statsRepository.getStats()
+//            stats = statsRepository.getStats()
+            stats = flowOf(null)
         }
     }
 }

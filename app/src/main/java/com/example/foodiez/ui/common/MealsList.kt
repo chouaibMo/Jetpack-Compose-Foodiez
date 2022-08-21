@@ -22,7 +22,6 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.domain.product.Product
-import com.example.foodiez.domain.product.ProductData
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.product.ProductSource
 import com.example.foodiez.ui.theme.Dark
@@ -61,7 +60,7 @@ fun MealsList(navController: NavController, mealType: MealType, products: List<P
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             filteredProducts.forEach {
-                MealCard(data = it.data) {
+                MealCard(product = it) {
                     it.id?.let { id ->
                         navController.navigate(
                             Screen.Product.navigationLink(
@@ -77,7 +76,7 @@ fun MealsList(navController: NavController, mealType: MealType, products: List<P
 }
 
 @Composable
-fun MealCard(data: ProductData, onClick: (() -> Unit)) {
+fun MealCard(product: Product, onClick: (() -> Unit)) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,7 +88,7 @@ fun MealCard(data: ProductData, onClick: (() -> Unit)) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberImagePainter(data.imageURL),
+                painter = rememberImagePainter(product.imageURL),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -99,13 +98,13 @@ fun MealCard(data: ProductData, onClick: (() -> Unit)) {
             )
             Column(Modifier.padding(8.dp)) {
                 Text(
-                    text = data.productName,
+                    text = product.name,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "${data.nutriments.energyKcal.toInt()} kcal • 100 g/ml",
+                        text = "${product.caloriePer100} kcal • 100 g/ml",
                         color = Color.Gray,
                         fontSize = 12.sp
                     )

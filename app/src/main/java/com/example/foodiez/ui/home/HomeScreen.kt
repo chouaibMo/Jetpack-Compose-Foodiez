@@ -47,16 +47,17 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(25.dp)) {
+        LazyColumn {
             item { HomeHeader(navController) }
-
-            //TODO : add viewModel for calories progress and macro nutriments
+            item { Spacer(modifier = Modifier.size(25.dp)) }
             item { CaloriesProgress(stats) }
+            item { Spacer(modifier = Modifier.size(25.dp)) }
             item { MacroNutrimentsCard(stats) }
+            item { Spacer(modifier = Modifier.size(25.dp)) }
             item { MealsList(navController, MealType.BREAKFAST, products) }
-            item { MealsList(navController,MealType.LUNCH, products) }
-            item { MealsList(navController,MealType.SNACK, products) }
-            item { MealsList(navController,MealType.DINER, products) }
+            item { MealsList(navController, MealType.LUNCH, products) }
+            item { MealsList(navController, MealType.SNACK, products) }
+            item { MealsList(navController, MealType.DINER, products) }
         }
     }
 }
@@ -129,7 +130,7 @@ fun CaloriesProgress(stats: Stats?) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "$left calories left", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-            Text(text = "${stats?.totalCalories ?: "N/A"} kcal", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+            Text(text = "${stats?.totalCalories ?: "--"} kcal", fontSize = 13.sp, fontWeight = FontWeight.Bold)
         }
     }
 }

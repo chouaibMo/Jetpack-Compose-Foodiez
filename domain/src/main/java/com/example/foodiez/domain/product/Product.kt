@@ -1,26 +1,22 @@
 package com.example.foodiez.domain.product
 
-import com.google.gson.annotations.SerializedName
+data class Product(
+    val id : Int? = null,
+    val remoteId : String,
+    val name: String,
+    val brand: String,
+    val imageURL: String,
+    var type: MealType? = null,
+    var quantity: Int = 100,
+    val fatsPer100: Double,
+    val carbsPer100: Double,
+    val proteinsPer100: Double,
+    val caloriePer100: Double,
+) {
 
-data class Product (
+    fun fatsByQuantity() = fatsPer100 * quantity / 100
+    fun carbsByQuantity() = carbsPer100 * quantity / 100
+    fun proteinsByQuantity() = proteinsPer100 * quantity / 100
+    fun caloriesByQuantity() = caloriePer100 * quantity / 100
 
-    val id : Int?,
-
-    var type : MealType,
-
-    @SerializedName("code")
-    val code: String,
-
-    @SerializedName("status")
-    val status: Int,
-
-    @SerializedName("product")
-    val data : ProductData,
-)
-
-enum class MealType(val tag: String) {
-    BREAKFAST("Breakfast"),
-    LUNCH("Lunch"),
-    SNACK("Snack"),
-    DINER("Diner")
 }

@@ -1,7 +1,7 @@
 package com.example.foodiez.domain.product
 
+import com.example.foodiez.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface ProductRepository {
 
@@ -9,11 +9,11 @@ interface ProductRepository {
 
     suspend fun removeProduct(product: Product)
 
-    suspend fun getProduct(code: String): Flow<Product?>
-
     suspend fun getProduct(id: Int): Flow<Product?>
 
     suspend fun getAllProducts(): Flow<List<Product>>
 
-    suspend fun searchByQuery(query: String): Response<ProductList>
+    suspend fun getRemoteProduct(code: String): Flow<Resource<Product>>
+
+    suspend fun searchByQuery(query: String): Flow<Resource<List<Product>>>
 }

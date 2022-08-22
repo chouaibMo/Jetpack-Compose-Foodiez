@@ -4,11 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,15 +22,19 @@ import coil.compose.rememberImagePainter
 import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.domain.product.Product
 import com.example.foodiez.navigation.Screen
+import com.example.foodiez.ui.home.HomeViewModel
 import com.example.foodiez.ui.product.ProductSource
 import com.example.foodiez.ui.theme.Dark
 import com.example.foodiez.ui.theme.Gray
+import com.example.foodiez.ui.theme.Red
+import de.charlex.compose.RevealDirection
+import de.charlex.compose.RevealSwipe
 
 @Composable
-fun MealsList(navController: NavController, mealType: MealType, products: List<Product>) {
+fun MealsList(navController: NavController, mealType: MealType, products: List<Product>, viewModel: HomeViewModel) {
     val filteredProducts = products.filter { it.type == mealType }
 
-    if(filteredProducts.isNotEmpty()) {
+    if (filteredProducts.isNotEmpty()) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -60,18 +63,45 @@ fun MealsList(navController: NavController, mealType: MealType, products: List<P
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             filteredProducts.forEach {
-                MealCard(product = it) {
-                    it.id?.let { id ->
-                        navController.navigate(
-                            Screen.Product.navigationLink(
-                                ProductSource.LOCAL,
-                                id.toLong()
+                SwipeableMealCard(
+                    product = it,
+                    onSwipe = { viewModel.removeProduct(it) },
+                    onClick = {
+                        it.id?.let { id ->
+                            navController.navigate(
+                                Screen.Product.navigationLink(
+                                    ProductSource.LOCAL,
+                                    id.toLong()
+                                )
                             )
-                        )
+                        }
                     }
-                }
+                )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SwipeableMealCard(product: Product, onClick: () -> Unit, onSwipe: () -> Unit) {
+    RevealSwipe(
+        shape = RoundedCornerShape(8.dp),
+        directions = setOf(RevealDirection.EndToStart),
+        closeOnBackgroundClick = true,
+        backgroundCardEndColor = Red,
+        hiddenContentEnd = {
+            IconButton(onClick = { onSwipe() }) {
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = "delete product",
+                    tint = Color.White,
+                    modifier = Modifier.padding(horizontal = 25.dp)
+                )
+            }
+        }
+    ) {
+        MealCard(product, onClick)
     }
 }
 
@@ -104,7 +134,9 @@ fun MealCard(product: Product, onClick: (() -> Unit)) {
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "${product.caloriesByQuantity().toInt()} kcal • ${product.quantity} g/ml",
+                        text = "${
+                            product.caloriesByQuantity().toInt()
+                        } kcal • ${product.quantity} g/ml",
                         color = Color.Gray,
                         fontSize = 12.sp
                     )

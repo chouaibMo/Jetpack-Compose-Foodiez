@@ -19,3 +19,4 @@ val Orange100 = Color(0xFFfa8231)
 val Orange50 = Color(0x59FA8231)
 
 val CreamWhite2 = Color(0xFFFFFFF0)
+val Red = Color(0xFFf44949)

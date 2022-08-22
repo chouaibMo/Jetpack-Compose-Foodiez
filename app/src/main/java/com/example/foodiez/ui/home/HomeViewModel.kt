@@ -33,4 +33,10 @@ class HomeViewModel @Inject constructor(
             stats = flowOf(null)
         }
     }
+
+    fun removeProduct(product: Product) {
+        viewModelScope.launch {
+            productRepository.removeProduct(product)
+        }
+    }
 }

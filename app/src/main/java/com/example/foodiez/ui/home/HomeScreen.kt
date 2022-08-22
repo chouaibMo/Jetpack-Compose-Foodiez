@@ -54,10 +54,10 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
             item { Spacer(modifier = Modifier.size(25.dp)) }
             item { MacroNutrimentsCard(stats) }
             item { Spacer(modifier = Modifier.size(25.dp)) }
-            item { MealsList(navController, MealType.BREAKFAST, products) }
-            item { MealsList(navController, MealType.LUNCH, products) }
-            item { MealsList(navController, MealType.SNACK, products) }
-            item { MealsList(navController, MealType.DINER, products) }
+            item { MealsList(navController, MealType.BREAKFAST, products, viewModel) }
+            item { MealsList(navController, MealType.LUNCH, products, viewModel) }
+            item { MealsList(navController, MealType.SNACK, products, viewModel) }
+            item { MealsList(navController, MealType.DINER, products, viewModel) }
         }
     }
 }

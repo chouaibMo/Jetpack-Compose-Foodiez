@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.foodiez.domain.product.MealType
-import com.example.foodiez.domain.stats.Stats
+import com.example.foodiez.domain.statistic.Statistic
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.common.MealsList
 import com.example.foodiez.ui.theme.CreamWhite2
@@ -39,7 +39,7 @@ import com.example.foodiez.ui.theme.Dark
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val products by viewModel.products.collectAsState(initial = emptyList())
-    val stats by viewModel.stats.collectAsState(initial = null)
+    val stats = viewModel.stats
 
     Box(
         modifier = Modifier
@@ -106,9 +106,9 @@ fun HomeHeader(navController: NavController) {
 }
 
 @Composable
-fun CaloriesProgress(stats: Stats?) {
-    val left = 2500 - (stats?.totalCalories ?: 0)
-    val progress = (stats?.totalCalories?.toFloat() ?: 0f) / 2500f
+fun CaloriesProgress(stats : Statistic) {
+    val left = 2500 - stats.totalCalories
+    val progress = stats.totalCalories.toFloat() / 2500f
     Column(verticalArrangement = Arrangement.Center) {
         LinearProgressIndicator(
             progress = progress,
@@ -130,7 +130,7 @@ fun CaloriesProgress(stats: Stats?) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "$left calories left", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-            Text(text = "${stats?.totalCalories ?: "--"} kcal", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+            Text(text = "${stats.totalCalories} kcal", fontSize = 13.sp, fontWeight = FontWeight.Bold)
         }
     }
 }

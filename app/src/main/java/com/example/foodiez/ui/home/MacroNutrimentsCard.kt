@@ -10,12 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.foodiez.domain.stats.Stats
+import com.example.foodiez.domain.statistic.Statistic
 import com.example.foodiez.ui.theme.*
 import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
 @Composable
-fun MacroNutrimentsCard(stats: Stats?) {
+fun MacroNutrimentsCard(stats: Statistic) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,22 +32,22 @@ fun MacroNutrimentsCard(stats: Stats?) {
 
             Column(Modifier.padding(8.dp)) {
                 Text(text = "Carbs", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalCarbs ?: "--"}/300 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Green100)
+                Text(text = "${stats.totalCarbs}/300 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Green100)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(text = "Proteins", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalProteins ?: "--"}/160 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Blue100)
+                Text(text = "${stats.totalProteins}/160 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Blue100)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(text = "Fats", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                Text(text = "${stats?.totalFats ?: "--"}/70 g (85%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Orange100)
+                Text(text = "${stats.totalFats}/70 g (85%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Orange100)
 
             }
             // TODO : remove hardcoded max progress
             Box(contentAlignment = Alignment.Center) {
                 CircularProgressBar(
                     modifier = Modifier.size(145.dp),
-                    progress = stats?.totalCarbs?.toFloat() ?: 0f,
+                    progress = stats.totalCarbs.toFloat(),
                     progressMax = 300f,
                     progressBarColor = Green100,
                     progressBarWidth = 13.dp,

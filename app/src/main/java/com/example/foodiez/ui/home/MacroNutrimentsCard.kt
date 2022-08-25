@@ -20,7 +20,7 @@ fun MacroNutrimentsCard(stats: Statistic) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(16.dp),
         elevation = 5.dp,
         backgroundColor = Gray
     ) {
@@ -59,7 +59,7 @@ fun MacroNutrimentsCard(stats: Statistic) {
 
                 CircularProgressBar(
                     modifier = Modifier.size(115.dp),
-                    progress = stats?.totalProteins?.toFloat() ?: 0f,
+                    progress = stats.totalProteins.toFloat(),
                     progressMax = 160f,
                     progressBarColor = Blue100,
                     progressBarWidth = 13.dp,
@@ -71,7 +71,7 @@ fun MacroNutrimentsCard(stats: Statistic) {
 
                 CircularProgressBar(
                     modifier = Modifier.size(85.dp),
-                    progress = stats?.totalFats?.toFloat() ?: 0f,
+                    progress = stats.totalFats.toFloat(),
                     progressMax = 70f,
                     progressBarColor = Orange100,
                     progressBarWidth = 13.dp,

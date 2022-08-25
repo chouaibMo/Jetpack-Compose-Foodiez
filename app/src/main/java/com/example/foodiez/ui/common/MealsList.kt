@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -112,7 +113,7 @@ fun MealCard(product: Product, onClick: (() -> Unit)) {
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(10.dp),
         elevation = 5.dp,
         backgroundColor = Gray
     ) {
@@ -128,9 +129,11 @@ fun MealCard(product: Product, onClick: (() -> Unit)) {
             )
             Column(Modifier.padding(8.dp)) {
                 Text(
+                    maxLines = 1,
                     text = product.name,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(

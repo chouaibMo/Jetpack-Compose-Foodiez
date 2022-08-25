@@ -91,4 +91,7 @@ dependencies {
 
     //Swipe do action
     implementation 'de.charlex.compose:revealswipe:1.0.0'
+
+    //Multi Fab
+    implementation 'com.github.lemillion12:multi-floating-action-button:1.0.0'
 }

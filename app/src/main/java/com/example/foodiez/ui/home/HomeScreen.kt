@@ -1,27 +1,28 @@
 package com.example.foodiez.ui.home
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,20 +35,50 @@ import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.common.MealsList
 import com.example.foodiez.ui.theme.CreamWhite2
 import com.example.foodiez.ui.theme.Dark
+import com.example.foodiez.ui.theme.Gray
+import com.lemillion.android.fab.FabItem
+import com.lemillion.android.fab.MultiFabState
+import com.lemillion.android.fab.MultiFloatingActionButton
 
 
+// TODO : add alpha when FAB is expanded
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val products by viewModel.products.collectAsState(initial = emptyList())
     val stats = viewModel.stats
-
-    Box(
+    var toState by remember { mutableStateOf(MultiFabState.COLLAPSED) }
+    Scaffold(
+        backgroundColor = CreamWhite2,
         modifier = Modifier
             .background(CreamWhite2)
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    toState = MultiFabState.COLLAPSED
+                })
+            },
+        floatingActionButton = {
+            MultiFloatingActionButton(
+                fabIcon = Icons.Filled.Add,
+                items = listOf(
+                    FabItem(Icons.Filled.QrCodeScanner, "Scan product") {
+                        navController.navigate(Screen.Scan.route)
+                    },
+                    FabItem(Icons.Default.Search, "Search product") {
+                        navController.navigate(Screen.Search.route)
+                    }
+                ),
+                showLabels = false
+            )
+        }
     ) {
-        LazyColumn {
+        val alpha = if (toState == MultiFabState.EXPANDED) 0.4f else 1f
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .alpha(animateFloatAsState(alpha).value)
+        ) {
             item { HomeHeader(navController) }
             item { Spacer(modifier = Modifier.size(25.dp)) }
             item { CaloriesProgress(stats) }
@@ -106,19 +137,19 @@ fun HomeHeader(navController: NavController) {
 }
 
 @Composable
-fun CaloriesProgress(stats : Statistic) {
+fun CaloriesProgress(stats: Statistic) {
     val left = 2500 - stats.totalCalories
     val progress = stats.totalCalories.toFloat() / 2500f
     Column(verticalArrangement = Arrangement.Center) {
         LinearProgressIndicator(
             progress = progress,
             color = MaterialTheme.colors.primary,
-            backgroundColor = Color.LightGray,
+            backgroundColor = Gray,
             modifier = Modifier
                 .fillMaxWidth()
-                .size(12.dp)
+                .size(20.dp)
                 .graphicsLayer {
-                    shape = RoundedCornerShape(14.dp)
+                    shape = RoundedCornerShape(8.dp)
                     clip = true
                 }
         )

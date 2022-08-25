@@ -8,6 +8,7 @@ import androidx.navigation.navArgument
 import com.example.foodiez.ui.home.HomeScreen
 import com.example.foodiez.ui.product.ProductScreen
 import com.example.foodiez.ui.product.ProductSource
+import com.example.foodiez.ui.scan.ScanScreen
 import com.example.foodiez.ui.search.SearchScreen
 import com.example.foodiez.ui.settings.SettingsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -19,6 +20,7 @@ const val ARG_PRODUCT_SOURCE = "arg_product_source"
 
 internal sealed class Screen(val route: String) {
     object Home : Screen("home")
+    object Scan : Screen("scan")
     object Search : Screen("search")
     object Settings : Screen("settings")
     object Product : Screen("product/{$ARG_PRODUCT_SOURCE}/{$ARG_PRODUCT_ID}") {
@@ -35,6 +37,9 @@ fun Navigation() {
     AnimatedNavHost(navController, startDestination = Screen.Home.route) {
         composable(route = Screen.Home.route) {
             HomeScreen(navController)
+        }
+        composable(route = Screen.Scan.route) {
+            ScanScreen(navController)
         }
         composable(route = Screen.Search.route) {
             SearchScreen(navController, hiltViewModel())

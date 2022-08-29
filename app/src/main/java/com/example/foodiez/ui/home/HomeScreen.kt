@@ -19,10 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +44,7 @@ import com.lemillion.android.fab.MultiFloatingActionButton
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val products by viewModel.products.collectAsState(initial = emptyList())
-    val stats = viewModel.stats
+    val stats by remember { mutableStateOf(viewModel.stats) }
     var toState by remember { mutableStateOf(MultiFabState.COLLAPSED) }
     Scaffold(
         backgroundColor = CreamWhite2,
@@ -58,18 +57,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                 })
             },
         floatingActionButton = {
-            MultiFloatingActionButton(
-                fabIcon = Icons.Filled.Add,
-                items = listOf(
-                    FabItem(Icons.Filled.QrCodeScanner, "Scan product") {
-                        navController.navigate(Screen.Scan.route)
-                    },
-                    FabItem(Icons.Default.Search, "Search product") {
-                        navController.navigate(Screen.Search.route)
-                    }
-                ),
-                showLabels = false
-            )
+            HomeFloatingActionButton(navController)
         }
     ) {
         val alpha = if (toState == MultiFabState.EXPANDED) 0.4f else 1f
@@ -93,6 +81,21 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
     }
 }
 
+@Composable
+fun HomeFloatingActionButton(navController: NavController) {
+    MultiFloatingActionButton(
+        fabIcon = Icons.Filled.Add,
+        items = listOf(
+            FabItem(Icons.Filled.QrCodeScanner, "Scan product") {
+                navController.navigate(Screen.Scan.route)
+            },
+            FabItem(Icons.Default.Search, "Search product") {
+                navController.navigate(Screen.Search.route)
+            }
+        ),
+        showLabels = false
+    )
+}
 
 @Composable
 fun HomeHeader(navController: NavController) {
@@ -109,8 +112,9 @@ fun HomeHeader(navController: NavController) {
         ) {
             Image(
                 //TODO : set real profile
-                painter = rememberImagePainter("https://www.menshairstylestoday.com/wp-content/uploads/2021/07/Messy-Hair.jpg"),
+                painter = rememberImagePainter("https://media.istockphoto.com/photos/smiling-indian-man-looking-at-camera-picture-id1270067126?k=20&m=1270067126&s=612x612&w=0&h=ZMo10u07vCX6EWJbVp27c7jnnXM2z-VXLd-4maGePqc="),
                 contentDescription = "",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)

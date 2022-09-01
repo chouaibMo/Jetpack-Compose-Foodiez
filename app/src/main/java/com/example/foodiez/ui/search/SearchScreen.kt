@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -77,7 +79,9 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
 
 @Composable
 fun SearchBar(onValueChanged: ((String) -> Unit)) {
+    val focusManager = LocalFocusManager.current
     var state by remember { mutableStateOf(TextFieldValue("")) }
+
     Surface(
         elevation = 3.dp,
         shape = RoundedCornerShape(8.dp),
@@ -94,6 +98,7 @@ fun SearchBar(onValueChanged: ((String) -> Unit)) {
                 .background(Gray, RoundedCornerShape(8.dp))
                 .height(45.dp)
                 .fillMaxWidth(),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -109,14 +114,13 @@ fun SearchBar(onValueChanged: ((String) -> Unit)) {
                         modifier = Modifier.weight(1f),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        if (state == TextFieldValue(""))
+                        if (state.text.isEmpty())
                             Text("Search...")
                         innerTextField()
                     }
-                    if (state != TextFieldValue("")) {
-                        IconButton(
-                            onClick = { state = TextFieldValue("") },
-                        ) {
+
+                    if (state.text.isNotBlank()) {
+                        IconButton(onClick = { state = TextFieldValue("") }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "reset search bar",

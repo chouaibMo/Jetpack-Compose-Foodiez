@@ -30,7 +30,7 @@ class SearchViewModel @Inject constructor(private val productRepository: Product
         }
     }
 
-    fun searchByQuery(query: String) {
+    private fun searchByQuery(query: String) {
         Log.e(TAG, "searchByQuery: $query", )
         viewModelScope.launch {
             productRepository.searchByQuery(query).collectLatest { result ->

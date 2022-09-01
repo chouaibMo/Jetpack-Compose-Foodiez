@@ -139,13 +139,13 @@ fun ProductQuantity(state: ProductState) {
         var expanded by remember { mutableStateOf(false) }
         val options = MealType.values().map { it.tag }
 
+        state.product?.type ?: run { state.product?.type = MealType.getMealTypeByCurrentHour() }
         quantity = state.product?.quantity ?: 0
 
         OutlinedTextField(
             value = quantity.toString(),
             onValueChange = {
                 quantity = if (it.isBlank()) 0 else it.toInt()
-                Log.e(TAG, "changed: $it")
                 state.product?.quantity = quantity
             },
             label = { Text("Quantity") },
@@ -167,7 +167,7 @@ fun ProductQuantity(state: ProductState) {
         ) {
             OutlinedTextField(
                 readOnly = true,
-                value = state.product?.type?.tag ?: "Select..",
+                value = state.product?.type?.tag ?: MealType.getMealTypeByCurrentHour().tag,
                 onValueChange = {},
                 label = { Text("Meal type") },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -211,10 +211,3 @@ fun SaveProductButton(onClick: (() -> Unit)) {
         )
     }
 }
-
-
-//@Preview()
-//@Composable
-//fun SearchViewPreview() {
-//    ProductScreen(hiltViewModel())
-//}

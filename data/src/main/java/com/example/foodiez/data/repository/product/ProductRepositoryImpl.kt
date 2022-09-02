@@ -49,7 +49,6 @@ class ProductRepositoryImpl @Inject constructor(
             } else {
                 emit(Resource.Error<Product>(message = "unable to get product $code"))
             }
-            emit(Resource.Loading<Product>())
         }
     }
 
@@ -68,7 +67,6 @@ class ProductRepositoryImpl @Inject constructor(
             } else {
                 emit(Resource.Error<List<Product>>(message = "unable to search with $query"))
             }
-            emit(Resource.Loading<List<Product>>())
         }
     }
 }

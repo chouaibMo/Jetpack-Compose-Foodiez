@@ -1,6 +1,5 @@
 package com.example.foodiez.ui.product
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-import com.example.foodiez.data.utils.Constants.Companion.TAG
 import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.theme.*

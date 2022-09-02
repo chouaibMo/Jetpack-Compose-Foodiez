@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val productRepository: ProductRepository) : ViewModel() {
 
-    var productsList: MutableStateFlow<List<Product>> = MutableStateFlow(value = emptyList())
+    var searchUiState = MutableStateFlow(SearchUiState())
 
     private var searchJob : Job? = null
 
@@ -31,15 +31,19 @@ class SearchViewModel @Inject constructor(private val productRepository: Product
     }
 
     private fun searchByQuery(query: String) {
-        Log.e(TAG, "searchByQuery: $query", )
         viewModelScope.launch {
             productRepository.searchByQuery(query).collectLatest { result ->
                 when (result) {
-                    is Resource.Success -> productsList.value = result.data ?: emptyList()
-                    is Resource.Error -> productsList.value = emptyList()
-                    is Resource.Loading -> {}
+                    is Resource.Success -> searchUiState.value = searchUiState.value.copy(isLoading = false, productList = result.data ?: emptyList())
+                    is Resource.Error -> searchUiState.value = searchUiState.value.copy(isLoading = false, productList = emptyList())
+                    is Resource.Loading -> searchUiState.value = searchUiState.value.copy(isLoading = true, productList = emptyList())
                 }
             }
         }
     }
 }
+
+data class SearchUiState(
+    var isLoading : Boolean = false,
+    var productList : List<Product> = emptyList()
+)

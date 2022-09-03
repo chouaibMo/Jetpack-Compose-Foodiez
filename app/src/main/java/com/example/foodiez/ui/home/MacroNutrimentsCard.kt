@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,15 +49,15 @@ fun MacroNutrimentsCard(stats: Statistic) {
         ) {
 
             Column(Modifier.padding(8.dp)) {
-                Text(text = "Carbs", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = "Carbs", color = Color.DarkGray, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
                 Text(text = "${stats.totalCarbs}/300 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Green100)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Proteins", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = "Proteins", color = Color.DarkGray, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
                 Text(text = "${stats.totalProteins}/160 g (90%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Blue100)
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Fats", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = "Fats", color = Color.DarkGray, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
                 Text(text = "${stats.totalFats}/70 g (85%)", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Orange100)
 
             }

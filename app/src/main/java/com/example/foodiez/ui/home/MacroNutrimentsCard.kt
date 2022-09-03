@@ -1,10 +1,14 @@
 package com.example.foodiez.ui.home
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -16,6 +20,19 @@ import com.hitanshudhawan.circularprogressbar.CircularProgressBar
 
 @Composable
 fun MacroNutrimentsCard(stats: Statistic) {
+    val carbs: Float by animateFloatAsState(
+        targetValue = stats.totalCarbs.toFloat(),
+        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+    )
+    val fats: Float by animateFloatAsState(
+        targetValue = stats.totalFats.toFloat(),
+        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+    )
+    val proteins: Float by animateFloatAsState(
+        targetValue = stats.totalProteins.toFloat(),
+        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+    )
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,10 +61,11 @@ fun MacroNutrimentsCard(stats: Statistic) {
 
             }
             // TODO : remove hardcoded max progress
+            // TODO : retrieve preferences
             Box(contentAlignment = Alignment.Center) {
                 CircularProgressBar(
                     modifier = Modifier.size(145.dp),
-                    progress = stats.totalCarbs.toFloat(),
+                    progress = carbs,
                     progressMax = 300f,
                     progressBarColor = Green100,
                     progressBarWidth = 13.dp,
@@ -59,7 +77,7 @@ fun MacroNutrimentsCard(stats: Statistic) {
 
                 CircularProgressBar(
                     modifier = Modifier.size(115.dp),
-                    progress = stats.totalProteins.toFloat(),
+                    progress = proteins,
                     progressMax = 160f,
                     progressBarColor = Blue100,
                     progressBarWidth = 13.dp,
@@ -71,7 +89,7 @@ fun MacroNutrimentsCard(stats: Statistic) {
 
                 CircularProgressBar(
                     modifier = Modifier.size(85.dp),
-                    progress = stats.totalFats.toFloat(),
+                    progress = fats,
                     progressMax = 70f,
                     progressBarColor = Orange100,
                     progressBarWidth = 13.dp,

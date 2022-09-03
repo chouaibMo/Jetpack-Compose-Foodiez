@@ -1,23 +1,29 @@
 package com.example.foodiez.ui.home
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -36,7 +42,6 @@ import com.example.foodiez.ui.theme.CreamWhite2
 import com.example.foodiez.ui.theme.Dark
 import com.example.foodiez.ui.theme.Gray
 import com.lemillion.android.fab.FabItem
-import com.lemillion.android.fab.MultiFabState
 import com.lemillion.android.fab.MultiFloatingActionButton
 
 
@@ -44,28 +49,30 @@ import com.lemillion.android.fab.MultiFloatingActionButton
 @Composable
 fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val products by viewModel.products.collectAsState(initial = emptyList())
-    val stats by remember { mutableStateOf(viewModel.stats) }
-    var toState by remember { mutableStateOf(MultiFabState.COLLAPSED) }
+    val stats by  viewModel.stats.collectAsState()
+
+    //var toState by remember { mutableStateOf(MultiFabState.COLLAPSED) }
+
     Scaffold(
         backgroundColor = CreamWhite2,
         modifier = Modifier
             .background(CreamWhite2)
             .fillMaxSize()
             .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    toState = MultiFabState.COLLAPSED
-                })
+//                detectTapGestures(onTap = {
+//                    toState = MultiFabState.COLLAPSED
+//                })
             },
         floatingActionButton = {
             HomeFloatingActionButton(navController)
         }
     ) {
-        val alpha = if (toState == MultiFabState.EXPANDED) 0.4f else 1f
+        //val alpha = if (toState == MultiFabState.EXPANDED) 0.4f else 1f
 
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .alpha(animateFloatAsState(alpha).value)
+                //.alpha(animateFloatAsState(alpha).value)
         ) {
             item { HomeHeader(navController) }
             item { Spacer(modifier = Modifier.size(25.dp)) }
@@ -128,22 +135,27 @@ fun HomeHeader(navController: NavController) {
                 Text(text = "John Doe", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             }
         }
-        Icon(
-            imageVector = Icons.Rounded.Search,
-            contentDescription = "Settings",
-            modifier = Modifier
-                .size(34.dp)
-                .clickable {
-                    navController.navigate(Screen.Search.route)
-                }
-        )
+//        Icon(
+//            imageVector = Icons.Rounded.Search,
+//            contentDescription = "Settings",
+//            modifier = Modifier
+//                .size(34.dp)
+//                .clickable {
+//                    navController.navigate(Screen.Search.route)
+//                }
+//        )
     }
 }
 
 @Composable
 fun CaloriesProgress(stats: Statistic) {
     val left = 2500 - stats.totalCalories
-    val progress = stats.totalCalories.toFloat() / 2500f
+
+    val progress: Float by animateFloatAsState(
+        targetValue = stats.totalCalories.toFloat() / 2500f,
+        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+    )
+
     Column(verticalArrangement = Arrangement.Center) {
         LinearProgressIndicator(
             progress = progress,

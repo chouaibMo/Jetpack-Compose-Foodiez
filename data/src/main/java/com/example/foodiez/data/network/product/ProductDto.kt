@@ -18,7 +18,7 @@ data class ProductDto(
 
 fun ProductDto.toProduct(): Product =
     Product(
-        remoteId = data.productID,
+        remoteId = data.productID ?: "",
         name = data.productName,
         brand = data.brands ?: "",
         imageURL = data.imageURL ?: "",

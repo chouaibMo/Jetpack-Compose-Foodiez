@@ -22,16 +22,18 @@ data class ProductListDto(
 )
 
 fun ProductListDto.toProductList(): List<Product> {
-    return products.map {
-        Product(
-            name = it.productName,
-            brand = it.brands ?: "",
-            imageURL = it.imageURL ?: "",
-            fatsPer100 = it.nutriments.fat,
-            carbsPer100 = it.nutriments.carbohydrates,
-            proteinsPer100 = it.nutriments.proteins,
-            caloriePer100 = it.nutriments.energyKcal,
-            remoteId = it.productID
-        )
-    }
+    return products
+        .filter { !it.productID.isNullOrBlank() }
+        .map {
+            Product(
+                name = it.productName,
+                brand = it.brands ?: "",
+                imageURL = it.imageURL ?: "",
+                fatsPer100 = it.nutriments.fat,
+                carbsPer100 = it.nutriments.carbohydrates,
+                proteinsPer100 = it.nutriments.proteins,
+                caloriePer100 = it.nutriments.energyKcal,
+                remoteId = it.productID ?: ""
+            )
+        }
 }

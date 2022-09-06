@@ -39,7 +39,6 @@ fun MacroNutrimentsCard(stats: Statistic) {
             .fillMaxWidth()
             .wrapContentHeight(),
         shape = RoundedCornerShape(16.dp),
-        elevation = 5.dp,
         backgroundColor = Gray
     ) {
         Row(

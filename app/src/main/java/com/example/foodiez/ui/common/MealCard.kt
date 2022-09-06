@@ -63,7 +63,6 @@ fun SwipeableMealCard(product: Product, onClick: () -> Unit, onSwipe: () -> Unit
 @Composable
 fun MealCard(product: Product, onClick: (() -> Unit)) {
     Card(
-        elevation = 5.dp,
         backgroundColor = Gray,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier

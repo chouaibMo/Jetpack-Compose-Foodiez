@@ -30,16 +30,10 @@ fun MealsList(navController: NavController, mealType: MealType, products: List<P
                     .padding(start = 4.dp, end = 4.dp, bottom = 6.dp)
             ) {
                 Text(text = mealType.tag, color = Color.DarkGray, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-//                Icon(
-//                    imageVector = Icons.Default.AddCircle,
-//                    contentDescription = "Add product",
-//                    modifier = Modifier.size(20.dp),
-//                    tint = Dark
-//                )
             }
         }
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),

@@ -4,14 +4,17 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.QrCodeScanner
@@ -23,11 +26,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,9 +40,6 @@ import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.domain.statistic.Statistic
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.common.MealsList
-import com.example.foodiez.ui.theme.CreamWhite2
-import com.example.foodiez.ui.theme.Dark
-import com.example.foodiez.ui.theme.Gray
 import com.lemillion.android.fab.FabItem
 import com.lemillion.android.fab.MultiFloatingActionButton
 
@@ -53,9 +53,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
     //var toState by remember { mutableStateOf(MultiFabState.COLLAPSED) }
 
     Scaffold(
-        backgroundColor = CreamWhite2,
+        backgroundColor = colors.background,
         modifier = Modifier
-            .background(CreamWhite2)
             .fillMaxSize()
             .pointerInput(Unit) {
 //                detectTapGestures(onTap = {
@@ -124,20 +123,19 @@ fun HomeHeader(navController: NavController) {
                 modifier = Modifier
                     .size(45.dp)
                     .clip(CircleShape)
-                    .border(1.5.dp, Dark, CircleShape)
+                    .border(1.5.dp, colors.onSurface, CircleShape)
                     .clickable {
                         navController.navigate(Screen.Settings.route)
                     }
             )
             Column(verticalArrangement = Arrangement.spacedBy((-4).dp, Alignment.CenterVertically)) {
-                Text(text = "Welcome back,", color = Color.DarkGray, fontSize = 14.sp)
-                Text(text = "John Doe", color = Color.DarkGray, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = "Welcome back,", fontSize = 14.sp, color = colors.onBackground)
+                Text(text = "John Doe", fontSize = 24.sp, fontWeight = ExtraBold, color = colors.onBackground)
             }
         }
         Icon(
             imageVector = Icons.Outlined.CircleNotifications,
             contentDescription = "Settings",
-            tint = Dark,
             modifier = Modifier
                 .size(34.dp)
                 .clickable {}
@@ -158,8 +156,8 @@ fun CaloriesProgress(stats: Statistic) {
     Column(verticalArrangement = Arrangement.Center) {
         LinearProgressIndicator(
             progress = progress,
-            color = MaterialTheme.colors.primary,
-            backgroundColor = Gray,
+            color = colors.primary,
+            backgroundColor = colors.surface,
             modifier = Modifier
                 .fillMaxWidth()
                 .size(20.dp)
@@ -175,8 +173,8 @@ fun CaloriesProgress(stats: Statistic) {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "${stats.totalCalories} kcal", fontSize = 13.sp, fontWeight = FontWeight.Bold)
-            Text(text = "$left kcal left", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+            Text(text = "${stats.totalCalories} kcal", fontSize = 13.sp, fontWeight = Bold, color = colors.onBackground)
+            Text(text = "$left kcal left", fontSize = 13.sp, fontWeight = Bold, color = colors.onBackground)
         }
     }
 }

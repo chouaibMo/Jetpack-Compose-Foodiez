@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -15,8 +17,6 @@ import androidx.navigation.NavController
 import com.example.foodiez.navigation.Screen
 import com.example.foodiez.ui.common.MealCard
 import com.example.foodiez.ui.product.ProductSource
-import com.example.foodiez.ui.theme.CreamWhite2
-import com.example.foodiez.ui.theme.Green100
 
 @Composable
 fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hiltViewModel()) {
@@ -25,7 +25,7 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
-            .background(CreamWhite2)
+            .background(colors.background)
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .padding(top = 16.dp)
@@ -71,7 +71,7 @@ fun SearchLoading() {
         modifier = Modifier.fillMaxSize()
     ) {
         CircularProgressIndicator(
-            color = Green100,
+            color = colors.primary,
             strokeWidth = 10.dp,
             modifier = Modifier.size(100.dp)
         )

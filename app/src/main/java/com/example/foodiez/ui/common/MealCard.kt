@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
@@ -14,13 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.foodiez.domain.product.Product
-import com.example.foodiez.ui.theme.Gray
 import com.example.foodiez.ui.theme.Red
 import de.charlex.compose.RevealDirection
 import de.charlex.compose.RevealSwipe
@@ -63,7 +63,7 @@ fun SwipeableMealCard(product: Product, onClick: () -> Unit, onSwipe: () -> Unit
 @Composable
 fun MealCard(product: Product, onClick: (() -> Unit)) {
     Card(
-        backgroundColor = Gray,
+        backgroundColor = colors.surface,
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -81,18 +81,10 @@ fun MealCard(product: Product, onClick: (() -> Unit)) {
                     .clip(RoundedCornerShape(10.dp))
             )
             Column(Modifier.padding(8.dp)) {
-                Text(
-                    maxLines = 1,
-                    text = product.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Text(maxLines = 1, text = product.name, fontSize = 14.sp, fontWeight = Bold, overflow = Ellipsis, color = colors.onSurface)
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = "${
-                            product.caloriesByQuantity().toInt()
-                        } kcal • ${product.quantity} g/ml",
+                        text = "${product.caloriesByQuantity().toInt()} kcal • ${product.quantity} g/ml",
                         color = Color.Gray,
                         fontSize = 12.sp
                     )

@@ -1,13 +1,15 @@
 package com.example.foodiez.ui.product
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
@@ -18,9 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextAlign.Companion.Center
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,7 +30,6 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.foodiez.domain.product.MealType
 import com.example.foodiez.navigation.Screen
-import com.example.foodiez.ui.theme.*
 
 @Composable
 fun ProductScreen(navController: NavController, viewModel: ProductViewModel = hiltViewModel()) {
@@ -47,16 +48,16 @@ fun ProductScreen(navController: NavController, viewModel: ProductViewModel = hi
                 }
             }
         },
-        backgroundColor = CreamWhite2,
-        modifier = Modifier
-            .background(CreamWhite2)
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        backgroundColor = colors.background,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(30.dp),
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
+                .padding(bottom = 16.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(onTap = {
                         focusManager.clearFocus()
@@ -93,40 +94,19 @@ fun ProductHeader(url: String?, name: String?, brand: String?) {
             modifier = Modifier
                 .size(180.dp)
                 .padding(start = 8.dp, top = 4.dp, bottom = 4.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(20.dp))
         )
         Text(
             text = name ?: "--",
             fontSize = 24.sp,
-            fontWeight = FontWeight.ExtraBold,
-            textAlign = TextAlign.Center
+            fontWeight = ExtraBold,
+            textAlign = Center,
+            color = colors.onBackground
         )
-        Text(text = brand ?: "--", fontSize = 12.sp)
+        Text(text = brand ?: "--", fontSize = 12.sp, color = colors.onBackground)
     }
 }
 
-@Composable
-fun ProductMacroNutriments(calories: Double?, carbs: Double?, proteins: Double?, fats: Double?) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        MacroNutriment("Calories (kcal)", calories, Dark)
-        MacroNutriment("Carbs (g)", carbs, Green100)
-        MacroNutriment("Proteins (g)", proteins, Blue100)
-        MacroNutriment("Fats (g)", fats, Orange100)
-    }
-}
-
-@Composable
-fun MacroNutriment(label: String, value: Double?, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "$value",
-            fontSize = 26.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = color
-        )
-        Text(text = label, fontSize = 14.sp)
-    }
-}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -152,8 +132,8 @@ fun ProductQuantity(state: ProductState) {
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Dark,
-                unfocusedBorderColor = Dark
+                focusedBorderColor = colors.onSurface,
+                unfocusedBorderColor = colors.onSurface
             ),
             modifier = Modifier.weight(1f)
         )
@@ -169,8 +149,8 @@ fun ProductQuantity(state: ProductState) {
                 onValueChange = {},
                 label = { Text("Meal type") },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Dark,
-                    unfocusedBorderColor = Dark
+                    focusedBorderColor = colors.onSurface,
+                    unfocusedBorderColor = colors.onSurface
                 ),
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             )
@@ -197,7 +177,8 @@ fun ProductQuantity(state: ProductState) {
 @Composable
 fun SaveProductButton(onClick: (() -> Unit)) {
     FloatingActionButton(
-        backgroundColor = Green100,
+        shape = RoundedCornerShape(12.dp),
+        backgroundColor = colors.primary,
         onClick = { onClick() },
         modifier = Modifier.size(60.dp)
     ) {

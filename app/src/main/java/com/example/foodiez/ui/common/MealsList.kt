@@ -1,12 +1,12 @@
 package com.example.foodiez.ui.common
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -29,7 +29,7 @@ fun MealsList(navController: NavController, mealType: MealType, products: List<P
                     .fillMaxWidth()
                     .padding(start = 4.dp, end = 4.dp, bottom = 6.dp)
             ) {
-                Text(text = mealType.tag, color = Color.DarkGray, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                Text(text = mealType.tag, color = colors.onBackground, fontSize = 20.sp, fontWeight = ExtraBold)
             }
         }
         Column(

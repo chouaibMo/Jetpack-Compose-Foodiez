@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Close
@@ -20,8 +18,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.foodiez.ui.theme.Gray
-import com.example.foodiez.ui.theme.Green100
 
 
 @Composable
@@ -41,7 +37,7 @@ fun NavigateUpIcon(navController: NavController) {
         Icon(
             imageVector = Icons.Default.ArrowBackIos,
             contentDescription = "back",
-            tint = Green100
+            tint = colors.primary
         )
     }
 }
@@ -65,7 +61,7 @@ fun SearchInputField(onValueChanged: ((String) -> Unit)) {
             singleLine = true,
             maxLines = 1,
             modifier = Modifier
-                .background(Gray, RoundedCornerShape(8.dp))
+                .background(colors.surface, RoundedCornerShape(8.dp))
                 .height(45.dp)
                 .fillMaxWidth(),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
@@ -78,14 +74,14 @@ fun SearchInputField(onValueChanged: ((String) -> Unit)) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "search icon",
-                        tint = Green100
+                        tint = colors.primary
                     )
                     Box(
                         modifier = Modifier.weight(1f),
                         contentAlignment = Alignment.CenterStart
                     ) {
                         if (state.text.isEmpty())
-                            Text("Search...")
+                            Text("Search...", color = colors.onSurface)
                         innerTextField()
                     }
 
@@ -94,7 +90,7 @@ fun SearchInputField(onValueChanged: ((String) -> Unit)) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = "reset search bar",
-                                tint = Green100
+                                tint = colors.primary
                             )
                         }
                     }

@@ -39,14 +39,18 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun getRemoteProduct(code: String): Flow<Resource<Product>> {
         return flow {
             emit(Resource.Loading<Product>())
-            val response = productApi.getProduct(code)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    emit(Resource.Success<Product>(data = it.toProduct()))
-                } ?: run {
+            try {
+                val response = productApi.getProduct(code)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        emit(Resource.Success<Product>(data = it.toProduct()))
+                    } ?: run {
+                        emit(Resource.Error<Product>(message = "unable to get product $code"))
+                    }
+                } else {
                     emit(Resource.Error<Product>(message = "unable to get product $code"))
                 }
-            } else {
+            } catch (e : Exception) {
                 emit(Resource.Error<Product>(message = "unable to get product $code"))
             }
         }
@@ -55,16 +59,21 @@ class ProductRepositoryImpl @Inject constructor(
     override suspend fun searchByQuery(query: String): Flow<Resource<List<Product>>> {
         return flow {
             emit(Resource.Loading<List<Product>>())
-            val response = searchApi.searchByQuery(query)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    val result = it.toProductList()
+            try {
 
-                    emit(Resource.Success<List<Product>>(data = result))
-                } ?: run {
+                val response = searchApi.searchByQuery(query)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val result = it.toProductList()
+
+                        emit(Resource.Success<List<Product>>(data = result))
+                    } ?: run {
+                        emit(Resource.Error<List<Product>>(message = "unable to search with $query"))
+                    }
+                } else {
                     emit(Resource.Error<List<Product>>(message = "unable to search with $query"))
                 }
-            } else {
+            } catch (e : Exception) {
                 emit(Resource.Error<List<Product>>(message = "unable to search with $query"))
             }
         }

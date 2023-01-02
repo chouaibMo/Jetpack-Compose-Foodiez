@@ -22,4 +22,11 @@ This project takes advantage of best practices, and many popular libraries and t
    * [Room](https://developer.android.com/jetpack/androidx/releases/room) - store offline cache   
    * [CameraX](https://developer.android.com/jetpack/androidx/releases/camera) - to access device camera
 
-    
+
+## Preview
+
+<p> 
+  <img src="./screenshots/home.png" width="250" height="480"/>
+  <img src="./screenshots/search.png" width="250" height="480"/>
+  <img src="./screenshots/product.png" width="250" height="480"/>
+</p>
